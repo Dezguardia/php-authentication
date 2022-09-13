@@ -15,6 +15,7 @@ class UserAuthentication
     public const PASSWORD_INPUT_NAME = "password";
     public const SESSION_KEY = "_UserAuthentication_";
     public const SESSION_USER_KEY = "user";
+    public const LOGOUT_INPUT_NAME = "logout";
     private ?User $user = null;
 
 
@@ -71,5 +72,27 @@ class UserAuthentication
     {
         Session::start();
         return isset($_SESSION[$this::SESSION_KEY][$this::SESSION_USER_KEY]);
+    }
+
+    public function logoutForm(string $action, string $text): string
+    {
+        $logout=$this::LOGOUT_INPUT_NAME;
+        $form = <<<HTML
+        <form name="logoutForm" method="POST" action="$action">
+            <label>
+                <input name="$logout">
+            </label>
+            <button type="submit">$text</button>
+        </form>
+
+        HTML;
+        return $form;
+    }
+
+    public function logoutIfRequested(): void
+    {
+        if ($_POST['logout']) {
+            $_SESSION[$this::SESSION_KEY][$this::SESSION_USER_KEY]=null;
+        }
     }
 }
