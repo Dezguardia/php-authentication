@@ -6,11 +6,16 @@ use Authentication\Exception\AuthenticationException;
 use Entity\Exception\EntityNotFoundException;
 use Entity\User;
 use Html\StringEscaper;
+use Service\Exception\SessionException;
+use Service\Session;
 
 class UserAuthentication
 {
-    private const LOGIN_INPUT_NAME = "login";
-    private const PASSWORD_INPUT_NAME = "password";
+    public const LOGIN_INPUT_NAME = "login";
+    public const PASSWORD_INPUT_NAME = "password";
+    public const SESSION_KEY = "_UserAuthentication_";
+    public const SESSION_USER_KEY = "user";
+    private ?User $user = null;
 
 
     public function loginForm(string $action, string $submitText='OK'): string
@@ -34,6 +39,7 @@ class UserAuthentication
 
     /**
      * @throws AuthenticationException
+     * @throws SessionException
      */
     public function getUserFromAuth(): User
     {
@@ -44,6 +50,26 @@ class UserAuthentication
         } catch (EntityNotFoundException) {
             throw new AuthenticationException("Utilisateur introuvable.");
         }
+        $this->setUser($user);
         return $user;
+    }
+
+    /**
+     * @throws SessionException
+     */
+    protected function setUser(User $user): void
+    {
+        Session::start();
+        $this->user=$user;
+        $_SESSION[$this::SESSION_KEY][$this::SESSION_USER_KEY]=$user;
+    }
+
+    /**
+     * @throws SessionException
+     */
+    public function isUserConnected(): bool
+    {
+        Session::start();
+        return isset($_SESSION[$this::SESSION_KEY][$this::SESSION_USER_KEY]);
     }
 }
