@@ -5,6 +5,7 @@ namespace Authentication;
 use Authentication\Exception\AuthenticationException;
 use Entity\Exception\EntityNotFoundException;
 use Entity\User;
+use Html\StringEscaper;
 
 class UserAuthentication
 {
@@ -33,7 +34,6 @@ class UserAuthentication
 
     /**
      * @throws AuthenticationException
-     * @throws EntityNotFoundException
      */
     public function getUserFromAuth(): User
     {
