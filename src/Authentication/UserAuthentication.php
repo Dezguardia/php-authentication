@@ -79,8 +79,8 @@ class UserAuthentication
         $logout=$this::LOGOUT_INPUT_NAME;
         $form = <<<HTML
         <form name="logoutForm" method="POST" action="$action">
-            <label>
-                <input name="$logout">
+            <label >
+                <input name="$logout", type="text">
             </label>
             <button type="submit">$text</button>
         </form>
@@ -89,10 +89,14 @@ class UserAuthentication
         return $form;
     }
 
+    /**
+     * @throws SessionException
+     */
     public function logoutIfRequested(): void
     {
-        if ($_POST['logout']) {
-            $_SESSION[$this::SESSION_KEY][$this::SESSION_USER_KEY]=null;
+        if (array_key_exists('logout', $_POST)) {
+            Session::start();
+            session_destroy();
         }
     }
 }
