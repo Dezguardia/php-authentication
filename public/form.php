@@ -23,7 +23,7 @@ CSS
 );
 if ($authentication->isUserConnected()) {
     $form = $authentication->logoutForm('form.php', 'Se déconnecter');
-    $userprofile = new \Html\UserProfile($_SESSION[$authentication::SESSION_KEY][$authentication::SESSION_USER_KEY]);
+    $userprofile = new \Html\UserProfile($authentication->getUser());
     $p->appendContent(
         $userprofile->toHtml()
     );

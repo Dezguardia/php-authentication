@@ -3,6 +3,7 @@
 namespace Authentication;
 
 use Authentication\Exception\AuthenticationException;
+use Authentication\Exception\NotLoggedInException;
 use Entity\Exception\EntityNotFoundException;
 use Entity\User;
 use Html\StringEscaper;
@@ -17,6 +18,16 @@ class UserAuthentication
     public const SESSION_USER_KEY = "user";
     public const LOGOUT_INPUT_NAME = "logout";
     private ?User $user = null;
+
+
+    public function __construct()
+    {
+        try {
+            $this->user=$this->getUserFromSession();
+        } catch (NotLoggedInException) {
+
+        }
+    }
 
 
     public function loginForm(string $action, string $submitText='OK'): string
@@ -76,13 +87,10 @@ class UserAuthentication
 
     public function logoutForm(string $action, string $text): string
     {
-        $logout=$this::LOGOUT_INPUT_NAME;
+        $logout=self::LOGOUT_INPUT_NAME;
         $form = <<<HTML
         <form name="logoutForm" method="POST" action="$action">
-            <label >
-                <input name="$logout", type="text">
-            </label>
-            <button type="submit">$text</button>
+            <button type="submit" name="$logout">$text</button>
         </form>
 
         HTML;
@@ -97,6 +105,32 @@ class UserAuthentication
         if (array_key_exists('logout', $_POST)) {
             Session::start();
             session_destroy();
+            $this->user=null;
+        }
+    }
+
+    /**
+     * @throws NotLoggedInException
+     */
+    public function getUserFromSession(): ?User
+    {
+        Session::start();
+        if (isset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY])) {
+            if ($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY] instanceof User) {
+                return $_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY];
+            } else {
+                throw new NotLoggedInException("Utilisateur non connecté");
+            }
+        }
+        return null;
+    }
+
+    public function getUser(): User
+    {
+        if (isset($this->user)) {
+            return $this->user;
+        } else {
+            throw new NotLoggedInException("Utilisateur non connecté");
         }
     }
 }
