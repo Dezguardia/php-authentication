@@ -9,11 +9,12 @@ use Html\WebPage;
 $authentication = new UserAuthentication();
 
 $p = new WebPage('Utilisateur');
+$p->appendCssUrl("css/style.css");
 
 try {
     // Tentative de connexion
     $user = $authentication->getUserFromSession();
-    $userprofile = new \Html\UserProfile($authentication->getUser());
+    $userprofile = new \Html\UserProfileWithAvatar($authentication->getUser());
     $p->appendContent(<<<HTML
         <h1>Profil de {$user->getFirstName()}</h1>
     HTML);

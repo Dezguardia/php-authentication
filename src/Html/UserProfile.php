@@ -7,7 +7,7 @@ use Entity\User;
 
 class UserProfile
 {
-    private User $user;
+    protected User $user;
 
     public function __construct(User $fUser)
     {
