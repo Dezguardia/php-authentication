@@ -23,13 +23,13 @@ class UserProfile
         $profile =
             <<<HTML
         <div class="profile">
-            <p>Nom</p>
+            <h2>Nom</h2>
             <p>{$lastName}</p>
-            <p>Prénom</p>
+            <h2>Prénom</h2>
             <p>{$firstName}</p>
-            <p>Login</p>
+            <h2>Login</h2>
             <p>{$login}</p>
-            <p>Téléphone</p>
+            <h2>Téléphone</h2>
             <p>{$phone}</p>
         </div>
         HTML;

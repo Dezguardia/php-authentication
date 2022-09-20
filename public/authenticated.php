@@ -20,7 +20,7 @@ $user=$authentication->getUser();
 
 $p->appendContent(
     <<<HTML
-        <h1>{$user->getFirstName()}</h1>
+        <a href="user.php">{$user->getFirstName()}</a>
 HTML
 );
 
