@@ -53,4 +53,31 @@ class UserAvatar
             throw new EntityNotFoundException('Utilisateur introuvable');
         }
     }
+
+    /**
+     * @param string|null $avatar
+     * @return UserAvatar
+     */
+    public function setAvatar(?string $avatar): UserAvatar
+    {
+        $this->avatar = $avatar;
+        return $this;
+    }
+
+    public function save(): self
+    {
+        $stmt = MyPdo::getInstance()->prepare(
+            <<<SQL
+            UPDATE user 
+            SET avatar = :avatar
+            WHERE id = :id
+        SQL
+        );
+        $avatar=$this->getAvatar();
+        $id=$this->getId();
+        $stmt->bindParam(':avatar', $avatar);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $this;
+    }
 }
