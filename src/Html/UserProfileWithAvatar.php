@@ -3,6 +3,7 @@
 namespace Html;
 
 use Entity\User;
+use Html\Helper\Dumper;
 
 class UserProfileWithAvatar extends UserProfile
 {
@@ -35,5 +36,18 @@ class UserProfileWithAvatar extends UserProfile
     {
         parent::__construct($user);
         $this->formAction=$formAction;
+    }
+
+    public function updateAvatar(): bool
+    {
+        echo Dumper::dump($_FILES);
+        if (isset($_FILES[self::AVATAR_INPUT_NAME])
+            and $_FILES[self::AVATAR_INPUT_NAME]['error'] == UPLOAD_ERR_OK
+            and $_FILES[self::AVATAR_INPUT_NAME]['size'] > 0
+            and is_uploaded_file($_FILES[self::AVATAR_INPUT_NAME]['tmp_name'])) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

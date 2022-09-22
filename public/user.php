@@ -15,6 +15,7 @@ try {
     // Tentative de connexion
     $user = $authentication->getUserFromSession();
     $userprofile = new \Html\UserProfileWithAvatar($authentication->getUser(), $_SERVER['PHP_SELF']);
+    $userprofile->updateAvatar();
     $p->appendContent(<<<HTML
         <h1>Profil de {$user->getFirstName()}</h1>
     HTML);

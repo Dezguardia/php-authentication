@@ -2,9 +2,13 @@
 
 namespace Entity;
 
+use Authentication\Exception\NotLoggedInException;
+use Authentication\UserAuthentication;
 use Database\MyPdo;
 use Entity\Exception\EntityNotFoundException;
+use Html\UserProfileWithAvatar;
 use PDO;
+use Service\Exception\SessionException;
 
 class UserAvatar
 {
@@ -79,5 +83,30 @@ class UserAvatar
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         return $this;
+    }
+
+    public function maxFileSize(): int
+    {
+        return 65535;
+    }
+
+    /**
+     * @throws SessionException
+     * @throws NotLoggedInException
+     * @throws EntityNotFoundException
+     */
+    public function isValidFile(string $filename): bool
+    {
+        if (mime_content_type($filename)
+            and getimagesize($filename)) {
+            $auth=new UserAuthentication();
+            $user=$auth->getUserFromSession();
+            $userAvatar=self::findByID($user->getId());
+            $userAvatar->setAvatar(file_get_contents($filename));
+            $userAvatar->save();
+            return true;
+        } else {
+            return false;
+        }
     }
 }
