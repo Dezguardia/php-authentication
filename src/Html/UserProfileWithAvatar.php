@@ -13,10 +13,19 @@ class UserProfileWithAvatar extends UserProfile
     {
         $url="avatar.php?userId="."{$this->user->getId()}";
         $profile= parent::toHtml();
+        $avatarname=self::AVATAR_INPUT_NAME;
         $profile.= <<<HTML
             <div class="img">
+                <form method="POST" action="$this->formAction" enctype="multipart/form-data" name="imgform">
+                    <label>
+                        Changer:
+                        <input type="file" name="$avatarname">
+                    </label>
+                    <button type="submit">Mettre à jour</button>
+                </form>
                 <img src="$url" alt="avatar">
             </div>
+            
         HTML;
         return $profile;
 

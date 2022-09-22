@@ -14,14 +14,12 @@ $p->appendCssUrl("css/style.css");
 try {
     // Tentative de connexion
     $user = $authentication->getUserFromSession();
-    $userprofile = new \Html\UserProfileWithAvatar($authentication->getUser());
+    $userprofile = new \Html\UserProfileWithAvatar($authentication->getUser(), $_SERVER['PHP_SELF']);
     $p->appendContent(<<<HTML
         <h1>Profil de {$user->getFirstName()}</h1>
     HTML);
     $p->appendContent(
         $userprofile->toHtml()
-
-
     );
 } catch (Exception $e) {
     $p->appendContent("Un problème est survenu&nbsp;: {$e->getMessage()}");
