@@ -85,7 +85,7 @@ class UserAvatar
         return $this;
     }
 
-    public function maxFileSize(): int
+    public static function maxFileSize(): int
     {
         return 65535;
     }
@@ -95,7 +95,7 @@ class UserAvatar
      * @throws NotLoggedInException
      * @throws EntityNotFoundException
      */
-    public function isValidFile(string $filename): bool
+    public static function isValidFile(string $filename): bool
     {
         if (mime_content_type($filename)
             and getimagesize($filename)) {

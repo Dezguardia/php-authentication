@@ -3,12 +3,10 @@
 namespace Authentication;
 
 use Authentication\Exception\AuthenticationException;
-use Authentication\Exception\NotLoggedInException;
 use Entity\Exception\EntityNotFoundException;
 use Entity\User;
 use Html\StringEscaper;
 use Service\Exception\SessionException;
-use Service\Session;
 
 class UserAuthentication extends AbstractUserAuthentication
 {

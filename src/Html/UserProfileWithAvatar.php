@@ -3,11 +3,12 @@
 namespace Html;
 
 use Entity\User;
+use Entity\UserAvatar;
 use Html\Helper\Dumper;
+use ServerConfiguration\Directive;
 
 class UserProfileWithAvatar extends UserProfile
 {
-
     public const AVATAR_INPUT_NAME = 'avatar';
     private string $formAction;
     public function toHtml(): string
@@ -15,6 +16,7 @@ class UserProfileWithAvatar extends UserProfile
         $url="avatar.php?userId="."{$this->user->getId()}";
         $profile= parent::toHtml();
         $avatarname=self::AVATAR_INPUT_NAME;
+        $maxfilesize=min(Directive::getUploadMaxFileSize(), UserAvatar::maxFileSize());
         $profile.= <<<HTML
             <div class="img">
                 <form method="POST" action="$this->formAction" enctype="multipart/form-data" name="imgform">
@@ -22,6 +24,7 @@ class UserProfileWithAvatar extends UserProfile
                         Changer:
                         <input type="file" name="$avatarname">
                     </label>
+                    <input type="hidden" name="MAX_FILE_SIZE" value="$maxfilesize">
                     <button type="submit">Mettre à jour</button>
                 </form>
                 <img src="$url" alt="avatar">
@@ -29,7 +32,6 @@ class UserProfileWithAvatar extends UserProfile
             
         HTML;
         return $profile;
-
     }
 
     public function __construct(User $user, string $formAction)
@@ -40,7 +42,7 @@ class UserProfileWithAvatar extends UserProfile
 
     public function updateAvatar(): bool
     {
-        echo Dumper::dump($_FILES);
+        //echo Dumper::dump($_FILES);
         if (isset($_FILES[self::AVATAR_INPUT_NAME])
             and $_FILES[self::AVATAR_INPUT_NAME]['error'] == UPLOAD_ERR_OK
             and $_FILES[self::AVATAR_INPUT_NAME]['size'] > 0

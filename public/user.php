@@ -16,6 +16,7 @@ try {
     $user = $authentication->getUserFromSession();
     $userprofile = new \Html\UserProfileWithAvatar($authentication->getUser(), $_SERVER['PHP_SELF']);
     $userprofile->updateAvatar();
+    echo \ServerConfiguration\Directive::getUploadMaxFileSize();
     $p->appendContent(<<<HTML
         <h1>Profil de {$user->getFirstName()}</h1>
     HTML);
