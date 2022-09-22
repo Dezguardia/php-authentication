@@ -55,6 +55,7 @@ class User
     }
 
     /**
+     * Cherche un utilisateur dans la base de données à partir des informations de connexion en paramètre.
      * @throws EntityNotFoundException
      */
     public static function findByCredentials(string $login, string $password): self

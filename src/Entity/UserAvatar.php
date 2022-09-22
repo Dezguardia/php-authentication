@@ -36,6 +36,7 @@ class UserAvatar
     }
 
     /**
+     * Cherche l'avatar d'un utilisateur dans la base de données à partir de son ID.
      * @throws EntityNotFoundException
      */
     public static function findByID(int $userId): self
@@ -59,6 +60,8 @@ class UserAvatar
     }
 
     /**
+     * Affecte l'avatar passé en paramètre à avatar.
+     * Retourne l'UserAvatar.
      * @param string|null $avatar
      * @return UserAvatar
      */
@@ -68,6 +71,11 @@ class UserAvatar
         return $this;
     }
 
+    /**
+     * Met à jour dans la base de données l'avatar d'un utilisateur à partir des valeurs de l'instance d'UserAvatar.
+     * Retourne l'instance d'UserAvatar.
+     * @return $this
+     */
     public function save(): self
     {
         $stmt = MyPdo::getInstance()->prepare(
@@ -85,12 +93,19 @@ class UserAvatar
         return $this;
     }
 
+    /**
+     * Retourne la taille maximale de fichier possible pour l'avatar.
+     * @return int
+     */
     public static function maxFileSize(): int
     {
         return 65535;
     }
 
     /**
+     * Vérifie si un fichier est valide.
+     * Si oui, met à jour la valeur de l'attribut UserAvatar et appelle save() pour le mettre à jour
+     * dans la base de données.
      * @throws SessionException
      * @throws NotLoggedInException
      * @throws EntityNotFoundException

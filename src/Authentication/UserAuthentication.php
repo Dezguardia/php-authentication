@@ -13,7 +13,13 @@ class UserAuthentication extends AbstractUserAuthentication
     public const LOGIN_INPUT_NAME = "login";
     public const PASSWORD_INPUT_NAME = "password";
 
-
+    /**
+     * Implémente loginForm de la classe mère.
+     * Crée un formulaire de connexion et retourne le code html
+     * @param string $action
+     * @param string $submitText
+     * @return string
+     */
     public function loginForm(string $action, string $submitText='OK'): string
     {
         $logInput=$this::LOGIN_INPUT_NAME;
@@ -34,6 +40,8 @@ class UserAuthentication extends AbstractUserAuthentication
     }
 
     /**
+     * Implémente getUserFromAuth de la classe mère
+     * Retourne un utilisateur s'il se trouve dans le tableau des données POST
      * @throws AuthenticationException
      * @throws SessionException
      */

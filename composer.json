@@ -18,7 +18,9 @@
         "ext-intl": "*",
         "ext-pdo": "*",
         "friendsofphp/php-cs-fixer": "^3.11",
-      "ext-fileinfo": "*"
+      "ext-fileinfo": "*",
+        "ext-mbstring": "*",
+        "ext-gd": "*"
     },
     "scripts": {
         "start:linux" : [

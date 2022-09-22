@@ -9,6 +9,10 @@ class UserProfile
 {
     protected User $user;
 
+    /**
+     * Constructeur de la classe.
+     * @param User $fUser
+     */
     public function __construct(User $fUser)
     {
         $this->user = $fUser;

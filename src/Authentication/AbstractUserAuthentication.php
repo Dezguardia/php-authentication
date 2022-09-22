@@ -17,22 +17,34 @@ abstract class AbstractUserAuthentication
     public const LOGOUT_INPUT_NAME = "logout";
     private ?User $user = null;
 
-
+    /**
+     * Constructeur de la classe AbstractUserAuthentication
+     * @throws SessionException
+     */
     public function __construct()
     {
         try {
             $this->user=$this->getUserFromSession();
         } catch (NotLoggedInException) {
-
         }
     }
 
-
+    /**
+     * Crée le code html formulaire de connexion
+     * @param string $action
+     * @param string $submitText
+     * @return string Le code html
+     */
     abstract public function loginForm(string $action, string $submitText='OK'): string;
 
+    /**
+     * Cherche un utilisateur à partir des données transmises en POST
+     * @return User
+     */
     abstract public function getUserFromAuth(): User;
 
     /**
+     * Affecte à la propriété user l'utilisateur passé en paramètre
      * @throws SessionException
      */
     protected function setUser(User $user): void
@@ -43,6 +55,7 @@ abstract class AbstractUserAuthentication
     }
 
     /**
+     * Vérfie si un utilisateur est connecté
      * @throws SessionException
      */
     public function isUserConnected(): bool
@@ -51,6 +64,12 @@ abstract class AbstractUserAuthentication
         return isset($_SESSION[$this::SESSION_KEY][$this::SESSION_USER_KEY]);
     }
 
+    /**
+     * Produit le formulaire de déconnexion à partir de l'action donnée en paramètre
+     * @param string $action
+     * @param string $text
+     * @return string
+     */
     public function logoutForm(string $action, string $text): string
     {
         $logout=self::LOGOUT_INPUT_NAME;
@@ -64,6 +83,7 @@ abstract class AbstractUserAuthentication
     }
 
     /**
+     * Vérifie si une demande de déconnexion se trouve dans les données en post
      * @throws SessionException
      */
     public function logoutIfRequested(): void
@@ -76,6 +96,7 @@ abstract class AbstractUserAuthentication
     }
 
     /**
+     * Retourne un utilisateur ou non à partir des données de session
      * @throws NotLoggedInException|SessionException
      */
     public function getUserFromSession(): ?User
@@ -91,6 +112,11 @@ abstract class AbstractUserAuthentication
         return null;
     }
 
+    /**
+     * Retourne l'utilisateur affecté à user
+     * @return User
+     * @throws NotLoggedInException
+     */
     public function getUser(): User
     {
         if (isset($this->user)) {
