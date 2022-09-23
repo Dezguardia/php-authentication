@@ -16,6 +16,7 @@ if (!$authentication->isUserConnected()) {
 
 $title = 'Zone membre';
 $p = new WebPage($title);
+$p->appendCssUrl("css/style.css");
 
 $p->appendContent(
     <<<HTML

@@ -9,6 +9,7 @@ use Html\WebPage;
 $authentication = new UserAuthentication();
 
 $p = new WebPage('Authentification');
+$p->appendCssUrl("css/style.css");
 
 try {
     // Tentative de connexion

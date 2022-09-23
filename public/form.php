@@ -10,7 +10,7 @@ use Html\WebPage;
 $authentication = new UserAuthentication();
 $authentication->logoutIfRequested();
 $p = new WebPage('Authentification');
-
+$p->appendCssUrl("css/style.css");
 
 
 // Production du formulaire de connexion

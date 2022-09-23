@@ -16,6 +16,7 @@ if (!$authentication->isUserConnected()) {
 
 $title = 'Utilisateur';
 $p = new WebPage($title);
+$p->appendCssUrl("css/style.css");
 $user=$authentication->getUser();
 
 $p->appendContent(

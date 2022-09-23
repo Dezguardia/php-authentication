@@ -9,6 +9,8 @@ use Service\Exception\SessionException;
 class Session
 {
     /**
+     * Vérifie si une session peut être démarrée.
+     * Si oui, la démarre.
      * @throws SessionException
      */
     public static function start(): void

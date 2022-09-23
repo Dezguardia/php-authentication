@@ -4,11 +4,14 @@ namespace Html;
 
 use Authentication\Exception\NotLoggedInException;
 use Authentication\UserAuthentication;
+use Entity\Exception\EntityNotFoundException;
 use Entity\User;
 use Entity\UserAvatar;
 use Html\Helper\Dumper;
+use ImageManipulation\Exception\MyGdImageException;
 use ServerConfiguration\Directive;
 use Service\Exception\SessionException;
+use ImageManipulation\MyGdImage;
 
 class UserProfileWithAvatar extends UserProfile
 {
@@ -55,9 +58,11 @@ class UserProfileWithAvatar extends UserProfile
     }
 
     /**
-     *
+     * Vérifie la validité de l'image envoyée et la met à jour dans la base de données
+     * et dans l'instance de UserAvatar.
      * @return bool
-     * @throws \Entity\Exception\EntityNotFoundException
+     * @throws EntityNotFoundException
+     * @throws MyGdImageException
      */
     public function updateAvatar(): bool
     {
@@ -72,7 +77,10 @@ class UserProfileWithAvatar extends UserProfile
             } catch (NotLoggedInException|SessionException $e) {
             }
             $userAvatar=UserAvatar::findByID($user->getId());
-            $userAvatar->setAvatar(file_get_contents($_FILES[self::AVATAR_INPUT_NAME]['tmp_name']));
+            $newAvatar = MyGdImage::createFromString(file_get_contents($_FILES[self::AVATAR_INPUT_NAME]['tmp_name']));
+            $ressource=fopen('php://temp', 'rw');
+            $newAvatar->png($ressource);
+            $userAvatar->setAvatar(file_get_contents('php://temp'));
             $userAvatar->save();
             return true;
         } else {

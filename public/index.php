@@ -18,8 +18,9 @@ $webPage->appendContent(
     </ul>
     <h2>Pages</h2>
     <ul>
-        <li><a href="page1.php">Zone membre connecté</a>
-        <li><a href="page2.php">Zone membre utilisateur</a>
+        <li><a href="connected.php">Zone membre connecté</a>
+        <li><a href="authenticated.php">Zone membre utilisateur</a>
+        <li><a href="user.php">Profil utilisateur</a>
     </ul>
 HTML
 );

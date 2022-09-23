@@ -14,6 +14,7 @@ class SecureUserAuthentication extends AbstractUserAuthentication
     public const RANDOM_STRING_SIZE = 16;
 
     /**
+     * Crée un formulaire de connexion en HTML et le renvoie.
      * @throws SessionException
      */
     public function loginForm(string $action, string $submitText = 'OK'): string
