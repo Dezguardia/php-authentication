@@ -60,6 +60,7 @@ class UserProfileWithAvatar extends UserProfile
     /**
      * Vérifie la validité de l'image envoyée et la met à jour dans la base de données
      * et dans l'instance de UserAvatar.
+     * Utilise la mise en tampon et la classe MyGdImage pour convertir les images en png.
      * @return bool
      * @throws EntityNotFoundException
      * @throws MyGdImageException
@@ -77,10 +78,13 @@ class UserProfileWithAvatar extends UserProfile
             } catch (NotLoggedInException|SessionException $e) {
             }
             $userAvatar=UserAvatar::findByID($user->getId());
+            ob_start();
             $newAvatar = MyGdImage::createFromString(file_get_contents($_FILES[self::AVATAR_INPUT_NAME]['tmp_name']));
-            $ressource=fopen('php://temp', 'rw');
-            $newAvatar->png($ressource);
-            $userAvatar->setAvatar(file_get_contents('php://temp'));
+            $newAvatar = $newAvatar->scale(150, 150);
+            $newAvatar->png();
+            $img=ob_get_contents();
+            ob_end_clean();
+            $userAvatar->setAvatar($img);
             $userAvatar->save();
             return true;
         } else {

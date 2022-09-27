@@ -21,6 +21,7 @@ $webPage->appendContent(
         <li><a href="connected.php">Zone membre connecté</a>
         <li><a href="authenticated.php">Zone membre utilisateur</a>
         <li><a href="user.php">Profil utilisateur</a>
+        <li><a href="TPCompl2_images.php">Images TP Complémentaire</a>
     </ul>
 HTML
 );
