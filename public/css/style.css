@@ -38,3 +38,7 @@ body {
 a:link, a:visited, a:active {
     color: white;
 }
+img {
+    width: 25%;
+    align-self: center;
+}
